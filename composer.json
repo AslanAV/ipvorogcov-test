@@ -20,7 +20,8 @@
         "mockery/mockery": "^1.5.1",
         "nunomaduro/collision": "^6.3.2",
         "phpunit/phpunit": "^9.5.27",
-        "spatie/laravel-ignition": "^1.6.3"
+        "spatie/laravel-ignition": "^1.6.3",
+        "squizlabs/php_codesniffer": "^3.7.1"
     },
     "autoload": {
         "psr-4": {
@@ -35,6 +36,9 @@
         }
     },
     "scripts": {
+        "phpcs": "phpcs",
+        "phpcbf": "phpcbf",
+        "test": "phpunit",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
