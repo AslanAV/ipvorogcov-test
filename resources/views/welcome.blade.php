@@ -77,9 +77,8 @@
             </li>
         </ul>
 
-        <h4>Должен получиться примерно такой отчет:</h4>
-
         <div class="container">
+            <h4>Должен получиться примерно такой отчет:</h4>
 
         <table class="table table-bordered">
             <caption>Пример</caption>
