@@ -3,18 +3,18 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+//use Illuminate\Foundation\Testing\WithFaker;
+use JsonException;
 use Tests\TestCase;
 
-class AuthTest extends TestCase
+class TokenTest extends TestCase
 {
     use refreshDatabase;
+
     /**
-     * A basic feature test example.
-     *
-     * @return void
+     * @throws JsonException
      */
-    public function testGetToken()
+    public function testGetToken(): void
     {
         $uri = 'api/v1/token?login=login&password=password';
 
@@ -23,7 +23,9 @@ class AuthTest extends TestCase
         $response->assertStatus(201);
 
         $this->assertDatabaseCount('tokens', 1);
+
+        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $this->assertArrayHasKey('token', $data);
     }
-
-
 }

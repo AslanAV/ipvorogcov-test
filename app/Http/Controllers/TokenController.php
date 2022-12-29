@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Token;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 
 class TokenController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $login = $request->get('login');
         $password = $request->get('password');

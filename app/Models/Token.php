@@ -9,6 +9,12 @@ class Token extends Model
 {
     use HasFactory;
 
+    public mixed $login;
+    public mixed $password;
+    public mixed $token;
+    public mixed $expires_at;
+
+
     protected $fillable = [
         'id',
         'login',
