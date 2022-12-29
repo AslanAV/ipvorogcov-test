@@ -16,7 +16,7 @@ class TokenController extends Controller
         $password = $request->get('password');
 
         $carbon = new Carbon();
-        $expires_at = $carbon->subMinutes(5);
+        $expires_at = $carbon->addMinutes(5);
 
         $salt = 'ipvorogcov-test';
         $returnToken = md5(microtime() . $salt . time());
@@ -29,6 +29,6 @@ class TokenController extends Controller
         $token->save();
 
 
-        return response()->json(['token' => $returnToken], 201);
+        return response()->json(['token' => $token], 201);
     }
 }

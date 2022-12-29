@@ -4,17 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Token extends Model
 {
     use HasFactory;
-
-    public mixed $login;
-    public mixed $password;
-    public mixed $token;
-    public mixed $expires_at;
-
-
     protected $fillable = [
         'id',
         'login',
@@ -23,4 +17,9 @@ class Token extends Model
         'expires_at',
         'created_at',
     ];
+
+    public function labels(): BelongsToMany
+    {
+        return $this->belongsToMany(Data::class);
+    }
 }
