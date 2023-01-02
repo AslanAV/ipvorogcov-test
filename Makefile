@@ -12,9 +12,6 @@ setup:
 	npm run build
 	make ide-helper
 
-watch:
-	npm run watch
-
 migrate:
 	php artisan migrate
 
@@ -26,9 +23,6 @@ log:
 
 test:
 	php artisan test
-
-deploy:
-	git push heroku
 
 lint:
 	composer phpcs
@@ -52,16 +46,9 @@ build-front:
 	npm run build
 
 compose:
-	docker-compose up
+	docker-compose up -d
 
-compose-test:
-	docker-compose run web make test
-
-compose-bash:
-	docker-compose run web bash
-
-compose-setup: compose-build
-	docker-compose run web make setup
+compose-setup: compose-build make setup
 
 compose-make-setup:
 	docker-compose run web make setup
@@ -70,7 +57,7 @@ compose-build:
 	docker-compose build
 
 compose-db:
-	docker-compose exec db psql -U postgres
+	docker-compose exec db pgsql -U postgres
 
 compose-down:
 	docker-compose down -v
