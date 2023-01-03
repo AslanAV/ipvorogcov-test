@@ -10,16 +10,22 @@ use Tests\TestCase;
 
 //use Illuminate\Foundation\Testing\WithFaker;
 
-class FrontendTest extends TestCase
+class FrontendExpiredOutTokenTest extends TestCase
 {
     use refreshDatabase;
-    private Token $token;
+    private Token $expireOutToken;
     private array $body;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->token = Token::factory()->create();
+        $carbon = new Carbon();
+        $this->expireOutToken = Token::factory()->create([
+            'login' => fake()->name(),
+            'password'=> fake()->password(),
+            'token' => md5(microtime() . 'ipvorogcov-test' . time()),
+            'expires_at' => $carbon->subMinutes(6),
+        ]);
         $this->body = ['{
           "common": {
             "setting1": "Value 1",
@@ -48,31 +54,9 @@ class FrontendTest extends TestCase
         }'];
     }
 
-    /**
-     * @throws JsonException
-     */
-    public function testGetIdAndSaveData(): void
+    public function testExpiredOutToken(): void
     {
-        $token = $this->token::value('token');
-
-        $uri = 'api/v1/save-data';
-
-        $response = $this->postJson($uri, $this->body, ['Authorization' => $token]);
-
-        $response->assertStatus(201);
-
-        $this->assertDatabaseCount('data', 1);
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-
-        $this->assertArrayHasKey('id', $data);
-        $this->assertArrayHasKey('scriptTime', $data);
-        $this->assertArrayHasKey('scriptMemory', $data);
-    }
-
-    public function testBadToken()
-    {
-        $token = 'ce404f1d3da79074259d818d501262cb';
+        $token = $this->expireOutToken::value('token');
 
         $uri = 'api/v1/save-data';
 
