@@ -7,6 +7,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-param" content="_token" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -19,7 +20,7 @@
 </head>
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Меню</a>
+        <a class="navbar-brand" href="{{ route('home') }}">Меню</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,10 +30,7 @@
                     <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Описание Тестового</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('frontend') }}">Frontend</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('show-data.index') }}">Backend</a>
+                    <a class="nav-link" href="{{ route('backend.index') }}">Backend</a>
                 </li>
             </ul>
         </div>
@@ -44,4 +42,5 @@
     </div>
 
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </html>

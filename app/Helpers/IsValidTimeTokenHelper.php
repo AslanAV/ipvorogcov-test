@@ -5,7 +5,7 @@ namespace App\Helpers;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
-class IsValidTimeTokenHelpers
+class IsValidTimeTokenHelper
 {
     public static function validateToken(Collection|array $token): bool
     {

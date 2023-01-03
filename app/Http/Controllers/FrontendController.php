@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\IsValidTimeTokenHelpers;
+use App\Helpers\IsValidTimeTokenHelper;
 use App\Helpers\ScriptMemoryHelper;
 use App\Helpers\ScriptTimeHelper;
 use App\Models\Data;
@@ -25,7 +25,7 @@ class FrontendController extends Controller
             abort(403);
         }
 
-        if (!IsValidTimeTokenHelpers::validateToken($tokenDB)) {
+        if (!IsValidTimeTokenHelper::validateToken($tokenDB)) {
             abort(403, "Token is out expires!");
         }
 
