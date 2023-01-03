@@ -45,13 +45,8 @@ ci:
 build-front:
 	npm run build
 
-compose:
+compose-start-d:
 	docker-compose up -d
-
-compose-setup: compose-build make setup
-
-compose-make-setup:
-	docker-compose run web make setup
 
 compose-build:
 	docker-compose build

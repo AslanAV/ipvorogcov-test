@@ -1,171 +1,74 @@
-# Test task
+### Тестовое задание (перед выполнением ознакомьтесь ПОЛНОСТЬЮ)
+
+Развернуть проект на Yii 2 версии 2.0.47 (advanced-шаблон) или Laravel версии 9.3.12 или Symfony 6.2.0 и сделать два скрипта, а также CRUD без CREATE:
+- Скрипт авторизации в console-части, то есть он должен быть доступен через консоль на сервере (в Yii 2, к примеру, командой php yii cron/get-token). Принимает в параметрах логин и пароль - возвращает токен, действующий 5 минут, который нужно использовать для второго скрипта.
+- Скрипт во frontend-части (поддержка GET, POST). Принимает данные в формате JSON и сохраняет в БД возвращая идентификатор, а также время и память затраченные на обработку запроса и сохранение объекта в БД. Скрипт должен работать исключительно с аутентификацией по токену, полученному в console-части. Аутентификация должна проходить по заголовку в запросе.
+- CRUD (без CREATE) в backend-части. Отображает все сохраненные с frontend-части объекты в формате JSON с возможностью редактирования и удаления объектов. Просмотр должен предусматривать формирование из объекта JSON маркированный HTML-список с поддержкой разворачивания/сворачивания отдельных элементов. Элементы списка должны включать в себя название, тип объекта и значение в случае конца иерархии объектов.
+
+Комментарии:
 
 
-Read this in another language: [Русский](README.ru.md)
+- Второй скрипт должен работать как по GET, так и по POST. Можно сделать форму для удобства с выбором типа запроса.
+- Описание “данные в формате JSON” подразумевает любые данные в формате JSON, включая вложенные массивы во вложенных массивах либо же пустой JSON. Скрипт не должен привязываться к какому-то конкретному JSON-объекту, он должен уметь обрабатывать любые данные в формате JSON.
+- В advanced-шаблоне Yii 2 проект уже разделен на части - console, frontend и backend. В Laravel и Symfony это нужно проделать руками, формат - на ваше усмотрение, но части должны быть разделены явно и не просто разделением функционала в разные контроллеры, можете посмотреть как работает разделение приложений в Yii 2 (https://github.com/yiisoft/yii2-app-advanced/blob/master/docs/guide/structure-applications.md) и придумать что-то похожее. Это будет для вас хорошим опытом и полезным навыком. Если не сможете разобраться, то сделайте, как минимум, разделение на модули.
 
-This project is a service for save and work for your data in json format. You can see you object .
+***
+API get Token
+***
 
-[How to study _Structure and Interpretation of Computer Programs_ (SICP)](https://guides.hexlet.io/how-to-learn-sicp/)
+| **method** 	 |              **route**      	              | 
+|:------------:|:------------------------------------------:|
+|  POST    	   | api/v1/token?login=login&password=password |
 
-## For contributors
 
-* Discuss the project in #hexlet-volunteers on Slack: http://slack.hexlet.io
+***
+API save data with request header (example - Authorization: 9404d452ca7f57308b24406bda9284e8)
+***
 
-### Recorded meetings
+| **method** 	 |    **route**      	    |
+|:------------:|:----------------------:|
+|   GET    	   |  api/v1/save-data   	   |
+|  POST    	   |  aapi/v1/save-data   	   |
 
-* [Recorded meetings playlist](https://www.youtube.com/playlist?list=PL37_xn2SVZdCJ-xgB-phFaWrp25Kc3cLk)
+***
 
-## FAQ
-
-Q: I get this error `Illuminate\Session\TokenMismatchException: CSRF token mismatch.`
-A: Reset your config cache `php artisan config:clear`
-
-## Requirements
-
-Run `composer check-platform-reqs` to check PHP deps:
-
-* PHP ^8.1
-* Composer
-* Node.js (v16+) & NPM (6+)
-* SQLite for local, PostgreSQL for production
-* [heroku cli](https://devcenter.heroku.com/articles/heroku-cli#download-and-install); [How to deploy Laravel on Heroku](https://ru.hexlet.io/blog/posts/kak-razvernut-prilozhenie-laravel-na-heroku) (in Russian)
-
-[What is a Version Manager?](https://guides.hexlet.io/version-managers/)
-
-## Setup
-
-### Local setup
-
-To run on the local interpreter and SQLite:
-
-```sh
-make setup # set up the project
-make start # start server at http://127.0.0.1:8000/
-make test # run tests
+***
+Backend routes Rest API without CREATE
+```shell
+http://0.0.0.0:80/backend
 ```
+***
 
-### Running on PostgreSQL (deployed in a Docker container)
+[Tests for apps](https://github.com/AslanAV/ipvorogcov-test/tree/main/tests/Feature)
 
-1. Install deps and prepare the config file
+***
 
-    ```sh
-    make setup
-    ```
 
-2. Put your database credentials in the *.env* file
-
-    ```dotenv
-    DB_CONNECTION=pgsql
-    DB_HOST=localhost
-    DB_PORT=54320
-    DB_DATABASE=postgres
-    DB_USERNAME=postgres
-    DB_PASSWORD=secret
-    ```
-
-3. Start the database container and seed
-
-    ```sh
-    make compose-start-database
-    make db-prepare
-    ```
-
-4. Run the local server
-
-    ```sh
-    make start
-    ```
-
-### Setup in Docker
-
-1. Prepare the `.env` file
-
-    ```sh
-    make env-prepare
-    ```
-
-2. Put your database credentials in the `.env` file
-
-    ```dotenv
-    DB_CONNECTION=pgsql
-    DB_HOST=localhost
-    DB_PORT=5432
-    DB_DATABASE=postgres
-    DB_USERNAME=postgres
-    DB_PASSWORD=secret
-    ```
-
-3. Build and start the app
-
-    ```sh
-    make compose-setup # build project
-    make compose-start # start server at http://127.0.0.1:8000/
-    ```
-
-    ```sh
-    make compose-bash  # start bash session inside docker container
-    make test          # run tests inside docker container
-    ```
-
-## Coding stardards and other rules
-
-* Pull requests should be as small as reasonably possible
-* All code must comply with the PSR12 and Laravel standards (we also use some custom rules for added challenge)
-* Every pull request must pass all tests
-* All controller actions must have test coverage ([Start writing (appropriate) tests](https://ru.hexlet.io/blog/posts/how-to-test-code) (in Russian))
-* The forms are made using [laraeast/laravel-bootstrap-forms](https://github.com/laraeast/laravel-bootstrap-forms)
-* RoR's resource routing convention is used for the most part. In a very rare case when a route doesn't seem to fit the convention, it should be discussed first
-* All strings must be stored in locale files
-* To enable Rollbar logging, set the variable `LOG_CHANNEL=rollbar` and `ROLLBAR_TOKEN=` ([docs](https://docs.rollbar.com/docs/laravel))
-* To add an exercise, put its contents (a listing or pic) at `resources/views/exercise/listing/#_#.blade.php` and its text description, at `resources/lang/{locale}/sicp.php` under the key `exercises.#.#` (mind the locale).
-* To generate helper files (for autocompletion), use `make ide-helper`
-* Run `php artisan` and check out all available commands!
-
-## GitHub Auth Setup Guide
-
-Integrate the app with your GitHub account (read more at https://developer.github.com/apps/about-apps/). To integrate the app:
-
-* Enter your GitHub account and go to _Settings_
-* On the right, choose _GitHub Apps_, then push _New GitHub App_
-* A form will pop up. In the _GitHub App name_ field, type the app name (for example, _Hexlet-SICP_)
-* In _Homepage URL_, put the web address hosting your deploy (for example, _https://hexlet-sicp.herokuapp.com_)
-* In _User authorization callback URL_, put the URL to redirect to, once a user authorizes via GitHub. (for example, _https://hexlet-sicp.herokuapp.com/oauth/github/callback_)
-* In _Webhook URL_, put the URL to dispatch events to (for example, _https://hexlet-sicp.herokuapp.com/oauth/github/callback_)
-* Set the permission to access email (_User permissions->Email addresses->Read only_)
-* Save the app settings (push _Create GitHub App_)
-* The app page will open. Copy the Client ID and Client secret
-* Generate a private key (push _Generate a private key_)
-
-If deployed on Heroku, set the environment variables for your deploy. To set environment variables:
-
-* Open _Settings_
-* In the _Config Vars_ setting, add the following variables: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET and GITHUB_URL_REDIRECT and set them to the respective Client ID, Client secret and User authorization callback URL
-* Then, reset the configuration cache: ```heroku run php artisan config:cache```
-
-### Setting up a testing database
-
-1. Create a separate Postgres database.
-   Connection settings are available in the `pgsql_test` section of `config/database.php`.
-   How to set up a test database from scratch:
-
-    ```shell
-    sudo apt install postgresql
-    sudo -u postgres createuser --createdb $(whoami)
-    sudo -u postgres createuser hexlet_sicp_test_user
-    sudo -u postgres psql -c "ALTER USER hexlet_sicp_test_user WITH ENCRYPTED PASSWORD 'secret'"
-    createdb hexlet_sicp_test
-    ```
-
-2. Run tests on your testing database: `DB_CONNECTION=pgsql_test make test`
-
-### Adding a pre-commit hook
+## Setup project local
 
 ```shell
-git config core.hooksPath .githooks
+make setup
 ```
 
-##
+### Start server local
+```shell
+make start
+```
 
-[![Hexlet Ltd. logo](https://raw.githubusercontent.com/Hexlet/assets/master/images/hexlet_logo128.png)](https://hexlet.io/?utm_source=github&utm_medium=link&utm_campaign=exercises-sicp)
+***
 
-This repository is created and maintained by the team and the community of Hexlet, an educational project. [Read more about Hexlet](https://hexlet.io/?utm_source=github&utm_medium=link&utm_campaign=exercises-sicp).
+## Setup project docker-compose
+```shell
+make compose-build
+make setup
+```
+
+### Start server docker-compose
+```shell
+make compose-start-d
+```
+
+### Stop server docker-compose
+```shell
+make compose-down
+```
